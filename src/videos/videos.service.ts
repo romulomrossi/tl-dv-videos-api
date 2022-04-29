@@ -69,8 +69,10 @@ export class VideosService {
       timesViewed: { $gt: query.viewedMoreThan },
     };
 
-    if (query.onlyPublic === 'true') {
-      filter.isPrivate = { $eq: false };
+    if (query.onlyPublic !== undefined) {
+      if (query.onlyPublic === 'true') {
+        filter.isPrivate = { $eq: false };
+      }
     }
 
     return await this.model
