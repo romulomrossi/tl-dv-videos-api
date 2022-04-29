@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -20,48 +16,36 @@ export class VideosService {
   }
 
   async update(id: string, video: VideoDto): Promise<VideoDto> {
-    try {
-      video._id = this.toObjectId(id);
-      const result = await this.model
-        .findByIdAndUpdate(video._id, video, { new: true })
-        .exec();
+    video._id = this.toObjectId(id);
+    const result = await this.model
+      .findByIdAndUpdate(video._id, video, { new: true })
+      .exec();
 
-      if (result === null) {
-        throw new NotFoundException();
-      }
-
-      return result;
-    } catch (e) {
-      throw new InternalServerErrorException(e);
+    if (result === null) {
+      throw new NotFoundException();
     }
+
+    return result;
   }
 
   async delete(id: string): Promise<VideoDto> {
-    try {
-      const result = await this.model
-        .findByIdAndRemove(this.toObjectId(id))
-        .exec();
+    const result = await this.model
+      .findByIdAndRemove(this.toObjectId(id))
+      .exec();
 
-      if (result === null) {
-        throw new NotFoundException();
-      }
-
-      return result;
-    } catch (e) {
-      throw new InternalServerErrorException(e);
+    if (result === null) {
+      throw new NotFoundException();
     }
+
+    return result;
   }
 
   async findOne(id: string): Promise<VideoDto> {
-    try {
-      const result = await this.model.findById(this.toObjectId(id)).exec();
-      if (result === null) {
-        throw new NotFoundException();
-      }
-      return result;
-    } catch (e) {
-      throw new InternalServerErrorException(e);
+    const result = await this.model.findById(this.toObjectId(id)).exec();
+    if (result === null) {
+      throw new NotFoundException();
     }
+    return result;
   }
 
   async findAll(query: VideoQuery): Promise<VideoDto[]> {
