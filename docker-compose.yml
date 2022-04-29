@@ -1,0 +1,23 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - '27017:27017'
+  
+  videos-api:
+    build: '.'
+    links:
+      - mongo
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongo
+      - mongodb_migration
+
+  mongodb_migration:
+    build: './mongo-init'
+    depends_on:
+      - mongo
+    links:
+      - mongo
