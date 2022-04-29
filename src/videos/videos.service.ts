@@ -66,7 +66,7 @@ export class VideosService {
 
   async findAll(query: VideoQuery): Promise<VideoDto[]> {
     const filter: any = {
-      timesViewed: { $gt: query.viewedMoreThan },
+      timesViewed: { $gt: query.viewedMoreThan ?? -1 },
     };
 
     if (query.onlyPublic !== undefined) {
